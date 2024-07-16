@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="checkbox" name="" id="main">
+    <input type="checkbox" id="child" name="xyz">
+    <input type="checkbox" id="child" name="xyz">
+</body>
+<script>
+    let p = document.querySelector("#main");
+    let c = document.querySelectorAll("#child")
+
+    p.addEventListener("change", ()=>{
+        if(p.checked === false){
+            c.forEach((e) =>{
+                e.checked = false;
+            })
+        }
+        else{
+            c.forEach((e) =>{
+                e.checked = true;
+            })
+        }
+    })
+
+    let x = document.querySelectorAll("input[name='xyz']:checked").length;
+    p = x === c.length
+
+
+</script>
+</html>
