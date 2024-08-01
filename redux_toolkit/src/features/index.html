@@ -1,0 +1,153 @@
+Given your constraints of not wanting to use any form of web storage, backend, or persistence library, and also not wanting the data to reset, there is essentially no way to achieve this purely within the confines of standard client-side web technologies. However, here are a few creative approaches that might align with your needs:
+
+1. In-Memory State Sharing Across Tabs
+If your goal is to share state between multiple tabs or refreshes within a single browsing session, you can use a combination of a service worker or BroadcastChannel API to share state in-memory across different tabs:
+
+Using BroadcastChannel API
+The BroadcastChannel API allows simple communication between different browsing contexts (windows, tabs, iframes, web workers, etc.) that have the same origin.
+
+Setting Up BroadcastChannel
+
+Create the Redux store and slice:
+javascript
+Copy code
+// src/store.js
+import { configureStore, createSlice } from '@reduxjs/toolkit';
+
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: {
+    value: 0,
+  },
+  reducers: {
+    increment: (state) => {
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    setCounter: (state, action) => {
+      state.value = action.payload;
+    },
+  },
+});
+
+export const { increment, decrement, setCounter } = counterSlice.actions;
+
+export const store = configureStore({
+  reducer: {
+    counter: counterSlice.reducer,
+  },
+});
+Create your main component:
+javascript
+Copy code
+// src/App.js
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, setCounter } from './store';
+
+const broadcastChannel = new BroadcastChannel('counter_channel');
+
+function App() {
+  const dispatch = useDispatch();
+  const counter = useSelector((state) => state.counter.value);
+
+  useEffect(() => {
+    broadcastChannel.onmessage = (event) => {
+      if (event.data.type === 'SET_COUNTER') {
+        dispatch(setCounter(event.data.payload));
+      }
+    };
+  }, [dispatch]);
+
+  const handleIncrement = () => {
+    dispatch(increment());
+    broadcastChannel.postMessage({ type: 'SET_COUNTER', payload: counter + 1 });
+  };
+
+  const handleDecrement = () => {
+    dispatch(decrement());
+    broadcastChannel.postMessage({ type: 'SET_COUNTER', payload: counter - 1 });
+  };
+
+  return (
+    <div>
+      <h1>Counter: {counter}</h1>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleDecrement}>Decrement</button>
+    </div>
+  );
+}
+
+export default App;
+Explanation:
+BroadcastChannel: Used to broadcast the counter state changes to all other tabs.
+Redux Store: Manages the counter state and updates the state based on actions received via BroadcastChannel.
+React Component: Listens for counter state changes via BroadcastChannel and updates the counter state and UI accordingly.
+2. Query Parameters
+Another way to maintain state across page refreshes without using storage is to use query parameters in the URL. However, this will not help with maintaining state across different tabs or windows.
+
+Example Using Query Parameters
+
+Update your main component to use query parameters:
+javascript
+Copy code
+// src/App.js
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { increment, decrement, setCounter } from './store';
+import { useLocation, useHistory } from 'react-router-dom';
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
+function App() {
+  const dispatch = useDispatch();
+  const counter = useSelector((state) => state.counter.value);
+  const history = useHistory();
+  const query = useQuery();
+
+  useEffect(() => {
+    const counterValue = parseInt(query.get('counter'));
+    if (!isNaN(counterValue)) {
+      dispatch(setCounter(counterValue));
+    }
+  }, [dispatch, query]);
+
+  const handleIncrement = () => {
+    const newValue = counter + 1;
+    dispatch(increment());
+    history.push(`?counter=${newValue}`);
+  };
+
+  const handleDecrement = () => {
+    const newValue = counter - 1;
+    dispatch(decrement());
+    history.push(`?counter=${newValue}`);
+  };
+
+  return (
+    <div>
+      <h1>Counter: {counter}</h1>
+      <button onClick={handleIncrement}>Increment</button>
+      <button onClick={handleDecrement}>Decrement</button>
+    </div>
+  );
+}
+
+export default App;
+Explanation:
+Query Parameters: The counter state is saved in the URL as query parameters. When the page is refreshed, the state is read from the URL and used to set the initial state.
+React Component: Updates the URL query parameters whenever the counter state changes.
+Limitations:
+In-Memory State Sharing:
+
+Only works within a single browsing session.
+Data is lost when all tabs are closed or the browser is restarted.
+Query Parameters:
+
+State is visible in the URL, which might not be desirable.
+State is not preserved across different tabs unless manually handled.
+Unfortunately, without using any form of persistent storage, backend, or special library, these are the closest solutions you can implement within the limitations you've set.

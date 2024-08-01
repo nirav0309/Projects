@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addUserRequest,
@@ -10,6 +10,7 @@ import {
 const MyComponent = () => {
   const [newItem, setNewItem] = useState("");
   const [editItem, setEditItem] = useState(null);
+  const ref = useRef(null)
 
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.user);
@@ -26,6 +27,7 @@ const MyComponent = () => {
   };
 
   const handleEditItem = () => {
+    ref.current.select()
     if (editItem && editItem.name) {
       dispatch(editUserRequest(editItem));
       setEditItem(null);
@@ -43,6 +45,7 @@ const MyComponent = () => {
           <input
             type="text"
             value={editItem.name}
+            ref={ref}
             onChange={(e) => setEditItem({ ...editItem, name: e.target.value })}
           />
           <button onClick={handleEditItem}>Update Item</button>

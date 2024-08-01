@@ -4,8 +4,9 @@ import { add, addString, decrement, increment } from "./counterSlice";
 const Counter = () => {
   const count = useSelector((state) => state.mySlice.value);
   const dispatch = useDispatch();
+
   return (
-    <div className="counter"> 
+    <div className="counter">
       <h3>Official site react-redux</h3>
       <span> Count: {count}</span> <br />
       <button
@@ -20,10 +21,7 @@ const Counter = () => {
       >
         Decrement
       </button>
-      <button
-        aria-label="Decrement value"
-        onClick={() => dispatch(add(10))}
-      >
+      <button aria-label="Decrement value" onClick={() => dispatch(add(10))}>
         Add By 10
       </button>
       <button
@@ -32,7 +30,6 @@ const Counter = () => {
       >
         Add String
       </button>
-      
     </div>
   );
 };

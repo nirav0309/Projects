@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import QuillToolbar, { formats, modules } from "./quillEditorToolbar";
 import ReactQuill from "react-quill";
-
+import "react-quill/dist/quill.snow.css";
 const DropDown = () => {
   const quillRef = useRef(null);
   const [value, setValue] = useState("");
