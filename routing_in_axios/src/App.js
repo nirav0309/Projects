@@ -53,31 +53,6 @@
 
 // export default App;
 
-// import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import { HomePage } from "./component/home";
-// import { ContactPage } from "./component/contact";
-// import { Header } from "./component/header";
-// import { lazy, Suspense } from "react";
-
-// const AboutPage = lazy(() => import("./component/about"));
-// function App() {
-//   return (
-//     <div>
-//       <BrowserRouter>
-//         <Header />
-//         <Suspense fallback={<div>Loading...</div>}>
-//           <Routes>
-//             <Route path="/" exact element={<HomePage />} />
-//             <Route path="/about" element={<AboutPage />} />
-//             <Route path="/contact" element={<ContactPage />} />
-//           </Routes>
-//         </Suspense>
-//       </BrowserRouter>
-//     </div>
-//   );
-// }
-
-// export default App;
 
 //suspense and lazy example
 import { BrowserRouter, Route, Routes } from "react-router-dom";
