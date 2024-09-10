@@ -1,0 +1,99 @@
+.widget-container {
+    width: 300px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.widget-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.widget-content {
+    padding: 15px;
+}
+
+.chat-section {
+    margin-bottom: 20px;
+}
+
+.chat-option {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.chat-icon {
+    background-color: #f44336;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.faq-section h4 {
+    margin-bottom: 10px;
+}
+
+.faq-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.faq-icon {
+    background-color: #2196F3;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.show-more {
+    color: #4CAF50;
+    cursor: pointer;
+}
+
+.widget-footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f9f9f9;
+    font-size: 12px;
+}
+
+.widget-footer a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.widget-footer a:hover {
+    text-decoration: underline;
+}

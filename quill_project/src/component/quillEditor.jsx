@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import QuillToolbar, { formats, modules } from "./quillEditorToolbar";
-import ReactQuill from "react-quill";
+import { formats, modules } from "./quillEditorToolbar";
 import "react-quill/dist/quill.snow.css";
+import TextEditor from "./modals/newQuillEditor";
+
 const DropDown = () => {
   const quillRef = useRef(null);
   const [value, setValue] = useState("");
@@ -19,20 +20,28 @@ const DropDown = () => {
         const range = quill.getSelection();
         quill.insertText(range.index, value);
       });
+
+      // toolbar.addHandler("link", () => {
+      //   const range = quill.getSelection();
+      //   if (range) {
+      //     const value = prompt("Enter the URL:");
+      //     if (value) {
+      //       quill.format("link", value);
+
+      //       const [leaf] = quill.getLeaf(range.index);
+      //       if (leaf && leaf.parent && leaf.parent.domNode) {
+      //         leaf.parent.domNode.setAttribute("target", "_blank");
+      //       }
+      //     }
+      //   }
+      // });
     }
   }, [value]);
 
-  // console.log("my-value>>>>>>>>>>>", value)
-
-  // const newHtmlContent = value?.replace(/<br\s*\/?>/gi, "\n");
-  // console.log("replace",newHtmlContent)
-  // quillRef.current.root.innerHTML = newHtmlContent || "";
-
   return (
-    <div className="text-editor">
-      <QuillToolbar />
-      <ReactQuill
-        ref={quillRef}
+    <div className="text-editor">go
+      <TextEditor
+        // ref={quil~lRef}
         theme="snow"
         value={value}
         placeholder={"Write something awesome..."}

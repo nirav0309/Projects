@@ -1,0 +1,292 @@
+<div
+  class="ql-tooltip ql-editing"
+  data-mode="link"
+  style="left: -1px; top: 28px"
+>
+  <a
+    class="ql-preview"
+    rel="noopener noreferrer"
+    target="_blank"
+    href="about:blank"
+  ></a
+  ><input
+    type="text"
+    data-formula="e=mc^2"
+    data-link="https://quilljs.com"
+    data-video="Embed URL"
+    placeholder="https://quilljs.com"
+    class="ql-action"
+  /><select data-link-target="true" style="margin-top: 5px">
+    <option value="_self">Open in the same tab</option>
+    <option value="_blank">Open in a new tab</option></select
+  ><a class="ql-action"></a><a class="ql-remove"></a>
+</div>
+
+save button
+\ if (saveButton) {
+                    saveButton[1].addEventListener("click", function () {
+                      console.log("Selected value on save: inside", selectedValue);
+                      const linkInput =
+                        tooltip.root.querySelector("input[data-link]");
+                      const linkValue = linkInput.value;
+
+                      // Find the anchor tag and set the target attribute
+                      const editor = quill.root;
+                      const aTag = editor.querySelector(
+                        `a[href="${linkValue}"]`
+                      );
+                      if (aTag) {
+                        aTag.setAttribute("target", selectedValue);
+                      }
+
+                      // Update the editor content state
+                      const content = quill.root.innerHTML;
+                      const cleanedContent =
+                        content === "<p><br></p>" ? "" : content;
+                      setEditorContent(cleanedContent);
+
+                      // Hide the tooltip explicitly on save
+                      tooltip.hide();
+                    });
+                  }
+
+ //mutation to hide the selection option 
+  // Manage dropdown visibility without altering Quill's classes
+                  const manageDropdownVisibility = () => {
+                    const isTooltipVisible =
+                      tooltip.root.classList.contains("ql-editing");
+                    dropdown.style.display = isTooltipVisible
+                      ? "block"
+                      : "none";
+                  };
+
+                  // Initial check to set dropdown visibility
+                  manageDropdownVisibility();
+
+                  // Observe changes to the tooltip's class attribute
+                  const observer = new MutationObserver(
+                    manageDropdownVisibility
+                  );
+                  observer.observe(tooltip.root, {
+                    attributes: true,
+                    attributeFilter: ["class"],
+                  });
+
+                  // Cleanup observer when the tooltip is hidden
+                  tooltip.root.addEventListener(
+                    "hidden",
+                    () => {
+                      observer.disconnect();
+                    },
+                    { once: true }
+                  );
+
+
+           //buttons edit and save final
+            link: function () {
+                const range = quill.getSelection();
+                if (range) {
+                  const tooltip = quill.theme.tooltip;
+                  tooltip.edit("link");
+
+                  const selectedText = quill.getText(range.index, range.length);
+                  setSelectedText(selectedText);
+
+                  let selectedValue = "_self";
+                  let currentAnchorTag = null; // To store the current anchor tag
+
+                  let dropdown = tooltip.root.querySelector(
+                    "select[data-link-target]"
+                  );
+
+                  if (!dropdown) {
+                    const linkInput =
+                      tooltip.root.querySelector("input[data-link]");
+                    if (linkInput) {
+                      dropdown = document.createElement("select");
+                      dropdown.setAttribute("data-link-target", "true");
+                      dropdown.setAttribute("style", "margin-top: 5px");
+
+                      const options = [
+                        { value: "_self", text: "Open in the same tab" },
+                        { value: "_blank", text: "Open in a new tab" },
+                      ];
+
+                      options.forEach((optionData) => {
+                        const option = document.createElement("option");
+                        option.value = optionData.value;
+                        option.textContent = optionData.text;
+                        dropdown.appendChild(option);
+                      });
+
+                      dropdown.onchange = function (event) {
+                        event.stopPropagation();
+                        event.preventDefault();
+
+                        selectedValue = event.target.value;
+                        console.log("Selected value:", selectedValue);
+
+                        // Update the target attribute of the current anchor tag
+                        if (currentAnchorTag) {
+                          currentAnchorTag.setAttribute(
+                            "target",
+                            selectedValue
+                          );
+                        }
+                      };
+
+                      linkInput.parentNode.insertBefore(
+                        dropdown,
+                        linkInput.nextSibling
+                      );
+                      linkInput.classList.add("ql-action");
+                    }
+                  }
+
+                  // Log all action buttons
+                  const actionButtons = document.querySelectorAll(".ql-action");
+                  console.log("actionButtons:", actionButtons);
+                  console.log("numberOfButtons:", actionButtons.length);
+
+                  // Function to get the content of ::after pseudo-element
+                  function getPseudoElementContent(element, pseudoElement) {
+                    const style = getComputedStyle(element, pseudoElement);
+                    return style
+                      .getPropertyValue("content")
+                      .replace(/^["']|["']$/g, "");
+                  }
+
+                  // Add click event listeners to all action buttons
+                  actionButtons.forEach((button, index) => {
+                    button.addEventListener("click", (event) => {
+                      // Log the clicked button and its index
+                      console.log(`Button ${index + 1} clicked:`, event.target);
+
+                      // Get and log the content of the ::after pseudo-element
+                      const pseudoContent = getPseudoElementContent(
+                        button,
+                        "::after"
+                      );
+                      console.log(
+                        `Button ${index + 1} ::after content:`,
+                        pseudoContent
+                      );
+
+                      // Check if the clicked button is Edit or Save based on the ::after content
+                      if (pseudoContent.includes("Edit")) {
+                        console.log("Edit button clicked");
+                      } else if (pseudoContent.includes("Save")) {
+                        console.log("Save button clicked");
+                      } else {
+                        console.log("Other button clicked");
+                      }
+                    });
+                  });
+
+                  // Log cursor elements
+                  const cursorElements =
+                    document.querySelectorAll(".ql-cursor");
+                  if (cursorElements.length > 0) {
+                    cursorElements.forEach((element, index) => {
+                      console.log(
+                        `Cursor element ${index + 1} innerText:`,
+                        element.innerText
+                      );
+                      console.log(
+                        `Cursor element ${index + 1} innerHTML:`,
+                        element.innerHTML
+                      );
+                    });
+                  } else {
+                    console.log("No elements with class 'ql-cursor' found.");
+                  }
+
+                  // Manage dropdown visibility based on tooltip state
+                  const manageDropdownVisibility = () => {
+                    const isTooltipVisible =
+                      tooltip.root.classList.contains("ql-editing");
+                    dropdown.style.display = isTooltipVisible
+                      ? "block"
+                      : "none";
+                  };
+
+                  manageDropdownVisibility();
+
+                  const observer = new MutationObserver(
+                    manageDropdownVisibility
+                  );
+                  observer.observe(tooltip.root, {
+                    attributes: true,
+                    attributeFilter: ["class"],
+                  });
+
+                  tooltip.root.addEventListener(
+                    "hidden",
+                    () => {
+                      observer.disconnect();
+                    },
+                    { once: true }
+                  );
+                }
+              },
+
+
+
+              // edit and save button log 
+                // Log all action buttons
+                  const actionButtons = document.querySelectorAll(".ql-action");
+                  console.log("actionButtons:", actionButtons);
+                  console.log("numberOfButtons:", actionButtons.length);
+
+                  // Function to get the content of ::after pseudo-element
+                  function getPseudoElementContent(element, pseudoElement) {
+                    const style = getComputedStyle(element, pseudoElement);
+                    return style
+                      .getPropertyValue("content")
+                      .replace(/^["']|["']$/g, "");
+                  }
+
+                  // Add click event listeners to all action buttons
+                  actionButtons.forEach((button, index) => {
+                    button.addEventListener("click", (event) => {
+                      // Log the clicked button and its index
+                      console.log(`Button ${index + 1} clicked:`, event.target);
+
+                      // Get and log the content of the ::after pseudo-element
+                      const pseudoContent = getPseudoElementContent(
+                        button,
+                        "::after"
+                      );
+                      console.log(
+                        `Button ${index + 1} ::after content:`,
+                        pseudoContent
+                      );
+
+                      // Check if the clicked button is Edit or Save based on the ::after content
+                      if (pseudoContent.includes("Edit")) {
+                        console.log("Edit button clicked");
+                      } else if (pseudoContent.includes("Save")) {
+                        console.log("Save button clicked");
+                      } else {
+                        console.log("Other button clicked");
+                      }
+                    });
+                  });
+
+                  // Log cursor elements
+                  const cursorElements =
+                    document.querySelectorAll(".ql-cursor");
+                  if (cursorElements.length > 0) {
+                    cursorElements.forEach((element, index) => {
+                      console.log(
+                        `Cursor element ${index + 1} innerText:`,
+                        element.innerText
+                      );
+                      console.log(
+                        `Cursor element ${index + 1} innerHTML:`,
+                        element.innerHTML
+                      );
+                    });
+                  } else {
+                    console.log("No elements with class 'ql-cursor' found.");
+                  }

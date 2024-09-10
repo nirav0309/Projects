@@ -13,6 +13,7 @@ import {
   TableRow,
   TableCell,
   IconButton,
+  Modal,
 } from "@mui/material";
 import {
   AccountCircle,
@@ -23,6 +24,7 @@ import {
 } from "@mui/icons-material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import Divider from "@mui/material/Divider";
+import MyModal1 from "./modal1";
 
 const createData = (label, value) => {
   return { label, value };
@@ -36,8 +38,24 @@ const rows = [
   createData("Emergency Contact Name", "Name"),
   createData("Phone", 12345),
 ];
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "615px",
+  height: "459px",
+  bgcolor: "background.paper",
+  boxShadow: 24,
+};
+
 const PersonalDetails = ({ onClose }) => {
   //   const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -46,15 +64,17 @@ const PersonalDetails = ({ onClose }) => {
           <Typography
             variant="h5"
             sx={{
-              margin: "35px",
+              margin: "15px",
               fontFamily: "monospace",
               fontWeight: 500,
               textDecoration: "none",
-              fontSize: "30px",
+              fontSize: "35px",
               color: "white",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
-            go EXPENSE
+            go
           </Typography>
 
           <Box sx={{ margin: "30px", marginTop: "90px", color: "white" }}>
@@ -134,6 +154,7 @@ const PersonalDetails = ({ onClose }) => {
             <Typography variant="h6">Personal Details</Typography>
             <Box>
               <Button
+                variant="contained"
                 onClick={onClose}
                 sx={{
                   color: "black",
@@ -146,7 +167,19 @@ const PersonalDetails = ({ onClose }) => {
               >
                 Cancel
               </Button>
-              <Button variant="contained" color="primary" sx={{ ml: 1 }}>
+              <Button
+                variant="contained"
+                onClick={handleOpen}
+                sx={{
+                  ml: 1,
+                  background: "#0069BF",
+                  color: "white",
+                  boxShadow: 1,
+                  "&:hover": {
+                    background: "#0069BF",
+                  },
+                }}
+              >
                 Save
               </Button>
             </Box>
@@ -158,7 +191,7 @@ const PersonalDetails = ({ onClose }) => {
                 <CardContent>
                   <Avatar
                     alt="image"
-                    src="https://images.unsplash.com/photo-1721548902888-36f759c71727?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw5fHx8ZW58MHx8fHx8"
+                    src=""
                     sx={{ height: "100px", width: "100px" }}
                   />
                   <Typography variant="body2" sx={{ fontSize: "20px" }}>
@@ -218,6 +251,16 @@ const PersonalDetails = ({ onClose }) => {
           </Box>
         </Grid>
       </Grid>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <MyModal1 onClose={handleClose} />
+        </Box>
+      </Modal>
     </Box>
   );
 };

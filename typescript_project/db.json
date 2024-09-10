@@ -1,0 +1,68 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the capital of France?",
+      "options": ["Paris", "London", "Berlin", "Madrid"],
+      "correctAnswer": "Paris"
+    },
+    {
+      "id": 2,
+      "question": "What is the highest mountain in the world?",
+      "options": ["K2", "Kangchenjunga", "Lhotse", "Everest"],
+      "correctAnswer": "Everest"
+    },
+    {
+      "id": 3,
+      "question": "Who wrote 'Romeo and Juliet'?",
+      "options": [
+        "Charles Dickens",
+        "J.K. Rowling",
+        "William Shakespeare",
+        "Leo Tolstoy"
+      ],
+      "correctAnswer": "William Shakespeare"
+    },
+    {
+      "id": 4,
+      "question": "What is the largest ocean on Earth?",
+      "options": [
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Arctic Ocean",
+        "Pacific Ocean"
+      ],
+      "correctAnswer": "Pacific Ocean"
+    },
+    {
+      "id": 5,
+      "question": "What is the smallest planet in our solar system?",
+      "options": ["Venus", "Mars", "Mercury", "Neptune"],
+      "correctAnswer": "Mercury"
+    },
+    {
+      "id": 6,
+      "question": "lorem10?",
+      "options": ["Venus", "Mars", "Mercury", "Neptune"],
+      "correctAnswer": "Mercury"
+    },
+    {
+      "id": 7,
+      "question": "What is the smallest planet in our solar system?",
+      "options": ["Venus", "Mars", "Mercury", "Neptune"],
+      "correctAnswer": "Mercury"
+    },
+    {
+      "id": 8,
+      "question": "hvahjdhjae fejfviluegf",
+      "options": ["Venus", "Mars", "Mercury", "Neptune"],
+      "correctAnswer": "Mercury"
+    },
+    {
+      "id": 9,
+      "question": "awfegrhetjryktujksjerh",
+      "options": ["Venus", "Mars", "Mercury", "Neptune"],
+      "correctAnswer": "Mercury"
+    }
+  ]
+}
